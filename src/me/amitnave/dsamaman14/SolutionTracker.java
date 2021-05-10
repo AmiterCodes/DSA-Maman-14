@@ -3,20 +3,30 @@ package me.amitnave.dsamaman14;
 public class SolutionTracker {
     private int comparisons = 0;
     private int placements = 0;
+    private long startTime;
+    private long timeTook;
 
-    public void print(int n, String algorithmName, int[] array, int result) {
-        System.out.println("For the value of N = " + n + ", the " + algorithmName + " algorithm");
-        System.out.println("committed " + comparisons + " comparisons and " + placements + " placements.");
-        //System.out.print("Input array: ");
-        //printArray(array);
-        //System.out.println();
-        System.out.println("Output: " + result);
+    /**
+     * prints results to console
+     * @param meta the metadata for the solution (known complexity and name)
+     * @param result the result of the method
+     */
+    public void print(SolutionMeta meta, int result) {
+        System.out.println();
+        System.out.println(Color.YELLOW_BOLD + meta.name() + " algorithm results:");
+        System.out.println(Color.WHITE + "committed " + Color.RESET + comparisons + Color.WHITE + " comparisons and " + Color.RESET + placements + Color.WHITE + " placements.");
+        System.out.println("Known Average Time Complexity: O(" + Color.RESET + meta.timeComplexity() + Color.WHITE + ")");
+        System.out.println("Output: " + Color.RESET +  result + Color.WHITE);
+        if(timeTook > 0) {
+            System.out.println("Time Took: " + Color.RESET + timeTook + "ms" + Color.WHITE);
+        }
+        System.out.println();
     }
 
     /**
      * used when a placement is made to record it as a placement, simply returns the inserted value
      */
-     public <T> T recordPlacement(T value) {
+     public <T> T place(T value) {
         placements++;
         return value;
     }
@@ -43,12 +53,11 @@ public class SolutionTracker {
         return a == b;
     }
 
-    private static void printArray(int[] array) {
-        System.out.print("[");
-        for (int i = 0; i < array.length; i++) {
-            if(i != 0) System.out.print(" ,");
-            System.out.print(array[i]);
-        }
-        System.out.print("]");
+    public void startStopwatch() {
+        startTime = System.nanoTime();
+    }
+
+    public void stopStopwatch() {
+        timeTook = (System.nanoTime() - startTime) / 1000000;
     }
 }
